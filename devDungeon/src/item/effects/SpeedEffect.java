@@ -43,16 +43,14 @@ public class SpeedEffect {
           .fetch(VelocityComponent.class)
           .orElseThrow( () -> MissingComponentException.build(target, VelocityComponent.class));
 
-      //standart Geschwindigkeit für x und y Bewegung
-      float normalX = velocityComponent.xVelocity();
-      float normalY = velocityComponent.yVelocity();
-
       //schreibt Entität neue Geschwindigkeit zu
-      target.add(new VelocityComponent(normalX * speedIncrease, normalY * speedIncrease));
+      target.add(new VelocityComponent(
+          velocityComponent.xVelocity() * speedIncrease,
+          velocityComponent.yVelocity() * speedIncrease));
 
       //nach buff Ablauf wird Geschwindigkeit auf Normalwerte zurückgesetzt
       EVENT_SCHEDULER.scheduleAction(
-          () -> target.add(new VelocityComponent(normalX, normalY)),
+          () -> target.add(velocityComponent),
           1000L * duration);
   }
 }
